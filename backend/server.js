@@ -15,10 +15,21 @@ app.use(express.json());
 console.log(process.env.MONGO_URL)
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+async function connectToDatabase() {
+  try {
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Successfully connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    // Optionally handle the error, such as retrying the connection or logging more details
+    process.exit(1); // Exit the process if the connection fails
+  }
+}
+
+connectToDatabase();
 
 // Routes
 app.use('/api/auth', authRoutes);

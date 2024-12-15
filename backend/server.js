@@ -4,15 +4,18 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
 const dashboardRoutes = require('./routes/dashboard');
+const dotenv = require('dotenv');
 
 const app = express();
 
 // Middleware
 app.use(cors());
+dotenv.config();
 app.use(express.json());
+console.log(process.env.MONGO_URL)
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost/task_management_app', {
+mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
